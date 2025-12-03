@@ -1,4 +1,17 @@
+"use client";
+
+import { useState, useEffect } from 'react';
+
 export default function Footer() {
+    const [count, setCount] = useState(null);
+
+    useEffect(() => {
+        fetch('https://api.counterapi.dev/v1/shaoli-christmas/visits/up')
+            .then(res => res.json())
+            .then(data => setCount(data.count))
+            .catch(err => console.error('Counter error:', err));
+    }, []);
+
     return (
         <div className="glass-card" style={{ marginTop: '2rem', textAlign: 'center', fontSize: '0.8rem', color: '#ccc' }}>
             <p>&copy; 2020 Shaoli</p>
@@ -13,9 +26,10 @@ export default function Footer() {
                 </div>
             </div>
             <div>
-                <p>MySong Counter</p>
-                {/* Counter placeholder */}
-                <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--accent)' }}>12345</div>
+                <p>Visitor Counter</p>
+                <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--accent)' }}>
+                    {count !== null ? count : '...'}
+                </div>
             </div>
         </div>
     );
