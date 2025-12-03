@@ -4,12 +4,59 @@ import { useState, useEffect } from 'react';
 
 export default function Footer() {
     const [count, setCount] = useState(null);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
-        fetch('https://api.counterapi.dev/v1/shaoli-christmas/visits/up')
-            .then(res => res.json())
-            .then(data => setCount(data.count))
-            .catch(err => console.error('Counter error:', err));
+        let interval;
+        let retryCount = 0;
+        const maxRetries = 3;
+
+        // Increment on mount
+        fetch('/api/counter', { method: 'POST' })
+            .then(res => {
+                if (!res.ok) throw new Error('Network response was not ok');
+                return res.json();
+            })
+            .then(data => {
+                setCount(data.count);
+                setError(false);
+                retryCount = 0;
+            })
+            .catch(err => {
+                console.error('Counter error:', err);
+                setError(true);
+            });
+
+        // Poll for updates every 5 seconds (reduced frequency to avoid rate limiting)
+        interval = setInterval(() => {
+            if (retryCount >= maxRetries) {
+                console.log('Max retries reached, stopping polling');
+                clearInterval(interval);
+                return;
+            }
+
+            fetch('/api/counter')
+                .then(res => {
+                    if (!res.ok) throw new Error('Network response was not ok');
+                    return res.json();
+                })
+                .then(data => {
+                    setCount(data.count);
+                    setError(false);
+                    retryCount = 0;
+                })
+                .catch(err => {
+                    console.error('Counter poll error:', err);
+                    retryCount++;
+                    if (retryCount >= maxRetries) {
+                        setError(true);
+                    }
+                });
+        }, 5000);
+
+        return () => {
+            if (interval) clearInterval(interval);
+        };
     }, []);
 
     return (
@@ -27,8 +74,8 @@ export default function Footer() {
             </div>
             <div>
                 <p>Visitor Counter</p>
-                <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--accent)' }}>
-                    {count !== null ? count : '...'}
+                <div suppressHydrationWarning style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--accent)' }}>
+                    {error ? 'Unavailable' : (count !== null ? count : '...')}
                 </div>
             </div>
         </div>
