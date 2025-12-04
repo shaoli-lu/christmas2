@@ -60,8 +60,23 @@ export default function Footer() {
     }, []);
 
     return (
-        <div className="glass-card" style={{ marginTop: '2rem', textAlign: 'center', fontSize: '0.8rem', color: '#ccc' }}>
-            <p>&copy; 2020 Shaoli</p>
+        <div className="glass-card" suppressHydrationWarning style={{ marginTop: '2rem', textAlign: 'center', fontSize: '0.8rem', color: '#ccc' }}>
+            <p>
+                <a
+                    href="/copyright"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                        color: '#ccc',
+                        textDecoration: 'none',
+                        transition: 'color 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => e.target.style.color = 'var(--accent)'}
+                    onMouseLeave={(e) => e.target.style.color = '#ccc'}
+                >
+                    &copy; 2020 Shaoli
+                </a>
+            </p>
             <div style={{ margin: '1rem 0' }}>
                 {/* Placeholder for QR Code */}
                 <div style={{ width: '100px', height: '100px', background: 'white', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'black' }}>
@@ -72,7 +87,7 @@ export default function Footer() {
                     />
                 </div>
             </div>
-            <div>
+            <div suppressHydrationWarning>
                 <p>Visitor Counter</p>
                 <div suppressHydrationWarning style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--accent)' }}>
                     {error ? 'Unavailable' : (count !== null ? count : '...')}
