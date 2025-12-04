@@ -26,7 +26,7 @@ export default function Copyright() {
                 </p>
 
                 <p style={{ marginBottom: '1.5rem' }}>
-                    All content on this website, including text, graphics, logos, images, videos, voices, and software, is the property of Shaoli and is protected by United States and international copyright laws. This website is intended for personal use only and may not be used for commercial purposes. Unauthorized use, reproduction, modification, distribution, or duplication of any content on this website without the express written permission of Shaoli is strictly prohibited.
+                    All content on this website, including text, graphics, logos, images, and software, is the property of Shaoli and is protected by United States and international copyright laws. This website is intended for personal use only and may not be used for commercial purposes. Unauthorized use, reproduction, modification, distribution, or duplication of any content on this website without the express written permission of Shaoli is strictly prohibited.
                 </p>
 
                 <p style={{ marginBottom: '1.5rem' }}>
@@ -56,7 +56,7 @@ export default function Copyright() {
                         e.target.style.color = 'var(--accent)';
                     }}
                 >
-                    Close Tab
+                    Close
                 </button>
             </div>
         </div>
