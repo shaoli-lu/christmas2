@@ -81,7 +81,7 @@ export default function Footer() {
                 {/* Placeholder for QR Code */}
                 <div style={{ width: '100px', height: '100px', background: 'white', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'black' }}>
                     <img
-                        src="/qrcode_shaoli-lu.github.io.png"
+                        src="/qrcode-colorful.png"
                         alt="QR Code"
                         style={{ maxWidth: '100%', maxHeight: '100%' }}
                     />
