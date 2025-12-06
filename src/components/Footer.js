@@ -74,7 +74,7 @@ export default function Footer() {
                     onMouseEnter={(e) => e.target.style.color = 'var(--accent)'}
                     onMouseLeave={(e) => e.target.style.color = '#ccc'}
                 >
-                    &copy; 2020 Shaoli
+                    &copy; 2025 Shaoli
                 </a>
             </p>
             <div style={{ margin: '1rem 0' }}>
