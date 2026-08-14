@@ -12,7 +12,7 @@ export default function Footer() {
         const maxRetries = 3;
 
         // Increment on mount
-        fetch('/api/counter', { method: 'POST' })
+        fetch('/api/counter', { method: 'POST', cache: 'no-store' })
             .then(res => {
                 if (!res.ok) throw new Error('Network response was not ok');
                 return res.json();
@@ -35,7 +35,7 @@ export default function Footer() {
                 return;
             }
 
-            fetch('/api/counter')
+            fetch('/api/counter', { cache: 'no-store' })
                 .then(res => {
                     if (!res.ok) throw new Error('Network response was not ok');
                     return res.json();
