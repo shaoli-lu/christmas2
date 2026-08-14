@@ -2,10 +2,17 @@ import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
-const COUNTER_WORKSPACE = process.env.COUNTER_API_WORKSPACE || 'test';
-const COUNTER_NAME = process.env.COUNTER_API_NAME || 'test';
+const COUNTER_WORKSPACE = process.env.COUNTER_API_WORKSPACE;
+const COUNTER_NAME = process.env.COUNTER_API_NAME;
 const COUNTER_API_KEY = process.env.COUNTER_API_KEY;
-const COUNTER_BASE_URL = `https://api.counterapi.dev/v2/${COUNTER_WORKSPACE}/${COUNTER_NAME}`;
+
+if (!COUNTER_WORKSPACE || !COUNTER_NAME) {
+    console.warn('CounterAPI is not configured. Set COUNTER_API_WORKSPACE and COUNTER_API_NAME in the environment.');
+}
+
+const COUNTER_BASE_URL = COUNTER_WORKSPACE && COUNTER_NAME
+    ? `https://api.counterapi.dev/v2/${COUNTER_WORKSPACE}/${COUNTER_NAME}`
+    : null;
 
 function buildHeaders() {
     const headers = { 'Content-Type': 'application/json' };
@@ -28,6 +35,12 @@ function normalizeCounterPayload(payload) {
 }
 
 export async function GET() {
+    if (!COUNTER_BASE_URL) {
+        return NextResponse.json({
+            error: 'CounterAPI is not configured. Set COUNTER_API_WORKSPACE and COUNTER_API_NAME in the environment.',
+        }, { status: 500 });
+    }
+
     try {
         const response = await fetch(COUNTER_BASE_URL, {
             cache: 'no-store',
@@ -44,12 +57,18 @@ export async function GET() {
     } catch (error) {
         console.error('Counter API error:', error);
         return NextResponse.json({
-            error: 'Failed to fetch counter. Set COUNTER_API_WORKSPACE and COUNTER_API_NAME for a production counter.',
+            error: 'Failed to fetch counter. Check your CounterAPI config and credentials.',
         }, { status: 500 });
     }
 }
 
 export async function POST() {
+    if (!COUNTER_BASE_URL) {
+        return NextResponse.json({
+            error: 'CounterAPI is not configured. Set COUNTER_API_WORKSPACE and COUNTER_API_NAME in the environment.',
+        }, { status: 500 });
+    }
+
     try {
         const response = await fetch(`${COUNTER_BASE_URL}/up`, {
             cache: 'no-store',
@@ -66,7 +85,7 @@ export async function POST() {
     } catch (error) {
         console.error('Counter API error:', error);
         return NextResponse.json({
-            error: 'Failed to increment counter. Set COUNTER_API_WORKSPACE and COUNTER_API_NAME for a production counter.',
+            error: 'Failed to increment counter. Check your CounterAPI config and credentials.',
         }, { status: 500 });
     }
 }
